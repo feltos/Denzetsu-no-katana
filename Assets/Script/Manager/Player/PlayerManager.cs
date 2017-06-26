@@ -7,14 +7,19 @@ public class PlayerManager : MonoBehaviour
     Rigidbody2D body;
     float horizontal;
     float vertical;
-    Vector2 horizontalMovement;
+    float horizontalMovement;
     [SerializeField] float speed;
     [SerializeField] bool IsTurnedRight = true;
 
     [SerializeField]
     BoxCollider2D[]hitZones = new BoxCollider2D[4];
-    float hitTimer;
+    float hitTimer = 0.0f;
+    const float hitPeriod = 0.1f;
     bool hit = false;
+
+    [SerializeField]GroundCheck groundCheck;
+    [SerializeField]
+    float jump;
 
     void Start ()
     {
@@ -25,9 +30,8 @@ public class PlayerManager : MonoBehaviour
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
-        horizontalMovement = new Vector2(
-                    speed * horizontal,0);
-        
+        horizontalMovement = 
+                    speed * horizontal;
 
         if (horizontal > 0 && !IsTurnedRight)
         {
@@ -37,24 +41,40 @@ public class PlayerManager : MonoBehaviour
         {        
                 IsTurnedRight = false;                
         }
-        if(Input.GetKey(KeyCode.Mouse0))
+        if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            AttackDirection();               
-        }       
-      /*  for(int i = 0; i < hitZones.Length; i ++)
+            hit = true;
+            hitTimer = 0.0f;
+            AttackDirection();                        
+        }
+       if(Input.GetButtonDown("Jump") && groundCheck.GetGroundedValue() >= 1)
         {
-            hitZones[i].enabled = false;
-        }*/
+            body.velocity = new Vector2(body.velocity.x, jump );
+        }
+        Debug.Log(groundCheck.GetGroundedValue());
     }
     void FixedUpdate()
     {
-        body.velocity = horizontalMovement;
+        body.velocity = new Vector2(horizontalMovement,body.velocity.y) ;
+
+        if (hit)
+        {
+            hitTimer += Time.deltaTime;
+        }
+        if(hitTimer > hitPeriod)
+        {
+            for (int i = 0; i < hitZones.Length; i++)
+            {
+                hitZones[i].enabled = false;
+            }
+            hit = false;
+        }
     }
     void AttackDirection()
     {
         if(horizontal > 0)
         {
-            hitZones[0].enabled = true;
+            hitZones[0].enabled = true;            
         }
         if (horizontal < 0)
         {
