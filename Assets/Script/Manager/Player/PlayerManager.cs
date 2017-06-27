@@ -21,6 +21,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     float jump;
 
+    bool OnWall = false;
+
     void Start ()
     {
         body = GetComponent<Rigidbody2D>();       
@@ -49,9 +51,15 @@ public class PlayerManager : MonoBehaviour
         }
        if(Input.GetButtonDown("Jump") && groundCheck.GetGroundedValue() >= 1)
         {
-            body.velocity = new Vector2(body.velocity.x, jump );
+            body.velocity = new Vector2(body.velocity.x, jump);
         }
-        Debug.Log(groundCheck.GetGroundedValue());
+        if (Input.GetButtonDown("Jump") && OnWall)
+        {
+            speed = 5;
+            body.gravityScale = 1;
+            body.velocity = new Vector2(horizontalMovement, jump);
+            OnWall = false;           
+        }
     }
     void FixedUpdate()
     {
@@ -89,5 +97,18 @@ public class PlayerManager : MonoBehaviour
             hitZones[3].enabled = true;
         }
     }
+
+    void OnCollisionEnter2D(Collision2D collider)
+    {
+        Debug.Log("Collision :  " + LayerMask.LayerToName(collider.gameObject.layer));
+        if(collider.gameObject.layer == LayerMask.NameToLayer("Wall") && groundCheck.GetGroundedValue() <= 0)
+        {            
+            body.gravityScale = 0;
+            body.velocity = Vector2.zero;
+            speed = 0;
+            OnWall = true;
+        }
+    }
+
 }
 
