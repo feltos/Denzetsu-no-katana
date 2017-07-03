@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     float vertical;
     float horizontalMovement;
     [SerializeField] float speed;
+    float basicSpeed;
     [SerializeField] bool IsTurnedRight = true;
 
     [SerializeField]
@@ -21,11 +22,17 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     float jump;
 
+    Vector3 checkPosition;
+    [SerializeField]
+    GameManager gameManager;
+
     bool OnWall = false;
 
     void Start ()
     {
-        body = GetComponent<Rigidbody2D>();       
+        body = GetComponent<Rigidbody2D>();
+        checkPosition = transform.position;
+        basicSpeed = speed;
     }
 
     void Update()
@@ -55,7 +62,7 @@ public class PlayerManager : MonoBehaviour
         }
         if (Input.GetButtonDown("Jump") && OnWall)
         {
-            speed = 5;
+            speed = basicSpeed;
             body.gravityScale = 1;
             body.velocity = new Vector2(horizontalMovement, jump);
             OnWall = false;           
@@ -110,5 +117,12 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("DeathZone"))
+        {
+            gameManager.Restart();
+        }
+    }
 }
 

@@ -2,15 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager : MonoBehaviour {
+public class CameraManager : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-		
+    private Vector3 offset;
+    [SerializeField]
+    GameObject player;
+    [SerializeField]float minPosY;
+
+	void Start ()
+    {
+        offset = transform.position - player.transform.position;
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	
+	void Update ()
+    {
 		
 	}
+
+    void LateUpdate()
+    {
+        Vector3 CameraPosition = player.transform.position + offset;
+        if (CameraPosition.y < minPosY)
+        {
+            CameraPosition.y = minPosY;
+        }
+        
+        transform.position = CameraPosition;
+    }
 }
+
