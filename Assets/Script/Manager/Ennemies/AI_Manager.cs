@@ -6,8 +6,8 @@ public class AI_Manager : MonoBehaviour
 {
 
     [SerializeField]protected GameObject player;
-    [SerializeField]protected float minRange = 0.1f;
     [SerializeField]protected float maxRange = 10.0f;
+
     
 	void Start ()
     {
@@ -21,7 +21,7 @@ public class AI_Manager : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+      if(collision.gameObject.layer == LayerMask.NameToLayer("Player") && collision.isTrigger)
         {
             Destroy(gameObject);
         }
