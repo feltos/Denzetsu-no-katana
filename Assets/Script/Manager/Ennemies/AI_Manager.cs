@@ -5,13 +5,14 @@ using UnityEngine;
 public class AI_Manager : MonoBehaviour
 {
 
-    [SerializeField]protected GameObject player;
+    protected GameObject player;
     [SerializeField]protected float maxRange = 10.0f;
-
+    [SerializeField]
+    BulletManager bulletManager;
     
 	void Start ()
     {
-		
+        
 	}
 	
 	void Update ()

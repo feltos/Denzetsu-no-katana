@@ -8,12 +8,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     PlayerManager playerManager;
     
-
 	void Start ()
     {
 		
 	}
-	
 	
 	void Update ()
     {

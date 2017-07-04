@@ -26,6 +26,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     GameManager gameManager;
 
+    [SerializeField]
+    float health;
+    [SerializeField]BoxCollider2D M_Col;
+
     bool OnWall = false;
 
     void Start ()
@@ -123,6 +127,16 @@ public class PlayerManager : MonoBehaviour
         {
             gameManager.Restart();
         }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && collision.IsTouching(M_Col))
+        {
+            LoseLife();
+            Destroy(collision.gameObject);
+        }
+    }
+
+    void LoseLife()
+    {
+        health -= 1;
     }
 }
 

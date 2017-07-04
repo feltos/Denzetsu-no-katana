@@ -24,8 +24,8 @@ public class GroundedEnnemies : AI_Manager
 	
 	void Start ()
     {
-
-	}
+        player = GameObject.Find("Player");
+    }
    
 	void Update ()
     {
