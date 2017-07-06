@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerCharacter : MonoBehaviour
 {
     Rigidbody2D body;
     float horizontal;
@@ -21,6 +21,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]GroundCheck groundCheck;
     [SerializeField]
     float jump;
+    float basicGravityScale;
 
     Vector3 checkPosition;
     [SerializeField]
@@ -28,7 +29,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField]
     float health;
-    [SerializeField]BoxCollider2D M_Col;
+    [SerializeField]BoxCollider2D m_MainBox;
 
     bool OnWall = false;
 
@@ -37,6 +38,7 @@ public class PlayerManager : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         checkPosition = transform.position;
         basicSpeed = speed;
+        basicGravityScale = body.gravityScale;
     }
 
     void Update()
@@ -67,9 +69,13 @@ public class PlayerManager : MonoBehaviour
         if (Input.GetButtonDown("Jump") && OnWall)
         {
             speed = basicSpeed;
-            body.gravityScale = 1;
+            body.gravityScale = basicGravityScale;
             body.velocity = new Vector2(horizontalMovement, jump);
             OnWall = false;           
+        }
+        if(health <= 0)
+        {
+
         }
     }
     void FixedUpdate()
@@ -93,7 +99,7 @@ public class PlayerManager : MonoBehaviour
     {
         if(horizontal > 0)
         {
-            hitZones[0].enabled = true;            
+            hitZones[0].enabled = true;           
         }
         if (horizontal < 0)
         {
@@ -111,7 +117,6 @@ public class PlayerManager : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collider)
     {
-        Debug.Log("Collision :  " + LayerMask.LayerToName(collider.gameObject.layer));
         if(collider.gameObject.layer == LayerMask.NameToLayer("Wall") && groundCheck.GetGroundedValue() <= 0)
         {            
             body.gravityScale = 0;
@@ -127,16 +132,13 @@ public class PlayerManager : MonoBehaviour
         {
             gameManager.Restart();
         }
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && collision.IsTouching(M_Col))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && collision.IsTouching(m_MainBox))
         {
-            LoseLife();
+            health -= 1;
             Destroy(collision.gameObject);
         }
     }
 
-    void LoseLife()
-    {
-        health -= 1;
-    }
+   
 }
 

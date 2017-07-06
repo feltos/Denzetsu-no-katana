@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletManager : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
     Rigidbody2D body;
     Vector2 direction;
@@ -46,5 +46,10 @@ public class BulletManager : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
         hit = true;
+    }
+
+    public bool GetHit()
+    {
+        return hit;
     }
 }

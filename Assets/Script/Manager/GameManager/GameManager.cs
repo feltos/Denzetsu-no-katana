@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    PlayerManager playerManager;
+    PlayerCharacter playerManager;
     
 	void Start ()
     {
@@ -15,10 +15,15 @@ public class GameManager : MonoBehaviour
 	
 	void Update ()
     {
-		
+        
 	}
 
     public void Restart()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void GameOver()
     {
         SceneManager.LoadScene(0);
     }

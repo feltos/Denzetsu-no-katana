@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundedEnnemies : AI_Manager
+public class GroundedEnnemies : AI
 {
     [SerializeField]
     float speed;
@@ -15,7 +15,7 @@ public class GroundedEnnemies : AI_Manager
     [SerializeField]
     float minRange;
     [SerializeField]
-    BoxCollider2D[] hitZones = new BoxCollider2D[3];
+    BoxCollider2D[] hitZones = new BoxCollider2D[2];
     bool hit = false;
     float hitTimer;
     const float hitPeriod = 0.1f;
@@ -84,10 +84,6 @@ public class GroundedEnnemies : AI_Manager
         if (player.transform.position.x > transform.position.x)
         {
             hitZones[1].enabled = true;
-        }
-        if (player.transform.position.y > transform.position.y)
-        {
-            hitZones[2].enabled = true;
         }
     }
     
