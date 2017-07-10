@@ -43,17 +43,32 @@ public class FlyingEnemy : AI
                 break;
                 
             case State.DETECTED:
+                
                 if(!alreadyAttack)
                 {
                     transform.position += deltaPos;
-                    state = State.PREPARING;
                 }
-             
+
+                if (alreadyAttack)
+                {
+                    Debug.Log("detected");
+                    transform.position += deltaPos *-2;
+                }                    
+                state = State.PREPARING;
+
                 break;
             case State.PREPARING:
                 preparingTimer += Time.deltaTime;
-                transform.position += deltaPos;
-                if(preparingTimer >= preparingCooldown)
+                if (!alreadyAttack)
+                {
+                    transform.position += deltaPos;
+                }
+
+                if (alreadyAttack)
+                {
+                    transform.position += deltaPos * -2;
+                }
+                if (preparingTimer >= preparingCooldown)
                 {
                     state = State.ATTACK;
                     preparingTimer = 0.0f;
@@ -61,7 +76,8 @@ public class FlyingEnemy : AI
                 break;
                 case State.ATTACK:
                 {
-                    Debug.Log("state attack");
+                    alreadyAttack = true;
+                    state = State.DETECTED;
                 }
                 break;
         }

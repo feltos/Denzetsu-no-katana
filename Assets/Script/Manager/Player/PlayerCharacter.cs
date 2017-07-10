@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]
     float health;
     [SerializeField]BoxCollider2D m_MainBox;
+
+    static string previousLevel = null;
 
     bool OnWall = false;
 
@@ -75,7 +78,7 @@ public class PlayerCharacter : MonoBehaviour
         }
         if(health <= 0)
         {
-
+            LoadLevel(name);
         }
     }
     void FixedUpdate()
@@ -139,6 +142,13 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-   
+   void LoadLevel(string name)
+    {
+        previousLevel = SceneManager.GetActiveScene().name;
+        if(previousLevel != null)
+        {
+            SceneManager.LoadScene(previousLevel);
+        }
+    }
 }
 

@@ -7,10 +7,12 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     PlayerCharacter playerManager;
+
+    int scene;
     
 	void Start ()
     {
-		
+
 	}
 	
 	void Update ()
@@ -20,7 +22,8 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene(0);
+        scene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(scene,LoadSceneMode.Single);
     }
 
     public void GameOver()
