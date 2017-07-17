@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -42,6 +43,20 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]float knockbackLength;
     [SerializeField]float knockbackCount;
     [SerializeField]bool knockFromRight;
+    bool getKnockback = false;
+    float knockbackTimer;
+    const float knockbackPeriod = 1f;
+
+    [SerializeField]
+    Slider healthBar;
+    [SerializeField]
+    GameObject attackUp;
+    [SerializeField]
+    GameObject attackDown;
+    [SerializeField]
+    GameObject attackLeft;
+    [SerializeField]
+    GameObject attackRight;
 
     void Start ()
     {
@@ -53,6 +68,14 @@ public class PlayerCharacter : MonoBehaviour
 
     void Update()
     {
+        if(getKnockback)
+        {
+            knockbackTimer += Time.deltaTime;
+            if(knockbackTimer >= knockbackPeriod)
+            {
+                getKnockback = false;
+            }
+        }
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
         horizontalMovement = 
@@ -60,13 +83,13 @@ public class PlayerCharacter : MonoBehaviour
 
         if (horizontal > 0 && !IsTurnedRight)
         {
-                IsTurnedRight = true;
+            Flip();
         }
         if(horizontal < 0 && IsTurnedRight)
-        {        
-                IsTurnedRight = false;                
+        {
+            Flip();
         }
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if(Input.GetButtonDown("Fire1"))
         {
             hit = true;
             hitTimer = 0.0f;
@@ -104,11 +127,11 @@ public class PlayerCharacter : MonoBehaviour
         {
             if(knockFromRight)
             {
-                body.velocity = new Vector2(-knockback, knockback/2);
+                body.velocity = new Vector2(-knockback,knockback);
             }
             if(!knockFromRight)
             {
-                body.velocity = new Vector2(knockback, knockback/2);
+                body.velocity = new Vector2(knockback, knockback);
             }
             knockbackCount -= Time.deltaTime;
         }
@@ -154,18 +177,9 @@ public class PlayerCharacter : MonoBehaviour
             speed = 0;
             OnWall = true;
         }
-        if(collider.gameObject.layer == LayerMask.NameToLayer("Enemy")|| collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if(collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            health -= 1;
-            knockbackCount = knockbackLength;
-            if(collider.transform.position.x > transform.position.x)
-            {
-                knockFromRight = true;
-            }
-            else
-            {
-                knockFromRight = false;
-            }
+            KnockbackEffect(collider.gameObject);
         }
     }
 
@@ -177,26 +191,21 @@ public class PlayerCharacter : MonoBehaviour
         }
         if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && collision.IsTouching(m_MainBox))
         {
-            health -= 1;
+            KnockbackEffect(collision.gameObject);   
             Destroy(collision.gameObject);
         }
-        if(collision.gameObject.layer == LayerMask.NameToLayer("BossBattle"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("LaserBeam"))
+        {
+            KnockbackEffect(collision.gameObject);
+        }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("BossBattle"))
         {
             goToBossBattle = true;
             gameManager.StartFadeOut();
         }
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy")&& collision.IsTouching(m_MainBox))
         {
-            health -= 1;
-            knockbackCount = knockbackLength;
-            if (collision.transform.position.x > transform.position.x)
-            {
-                knockFromRight = true;
-            }
-            else
-            {
-                knockFromRight = false;
-            }
+            KnockbackEffect(collision.gameObject);
         }
     }
 
@@ -214,6 +223,33 @@ public class PlayerCharacter : MonoBehaviour
         speed = basicSpeed;
         body.gravityScale = basicGravityScale;
         body.velocity = new Vector2(horizontalMovement, jump);
+    }
+    void Flip()
+    {
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+        IsTurnedRight = !IsTurnedRight;
+    }
+
+    void KnockbackEffect(GameObject collision)
+    {
+        knockbackTimer = 0.0f;
+        if(!getKnockback)
+        {
+            getKnockback = true;
+            health -= 1;
+            healthBar.value = health;
+            knockbackCount = knockbackLength;
+            if (collision.transform.position.x > transform.position.x)
+            {
+                knockFromRight = true;
+            }
+            else
+            {
+                knockFromRight = false;
+            }
+        }   
     }
 }
 

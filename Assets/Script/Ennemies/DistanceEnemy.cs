@@ -21,6 +21,8 @@ public class DistanceEnemy : AI
     GameObject bullet;
     Vector2 bulletDirection;
 
+    bool isTurnedRight = false;
+
 	void Start ()
     {
         this.maxRange = 18f;
@@ -51,6 +53,14 @@ public class DistanceEnemy : AI
                 fireCooldown = 0.0f;
             }
         }
+        if (body.velocity.x > 0 && !isTurnedRight)
+        {
+            Flip();
+        }
+        if (body.velocity.x < 0 && isTurnedRight)
+        {
+            Flip();
+        }
     }
 
     void FixedUpdate()
@@ -59,5 +69,13 @@ public class DistanceEnemy : AI
         {
             body.velocity = movement;
         }
+    }
+
+    void Flip()
+    {
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+        isTurnedRight = !isTurnedRight;
     }
 }

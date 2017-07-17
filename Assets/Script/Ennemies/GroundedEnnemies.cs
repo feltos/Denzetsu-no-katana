@@ -20,7 +20,8 @@ public class GroundedEnnemies : AI
     float hitTimer;
     const float hitPeriod = 0.1f;
     float cooldown;
-    const float cooldownPeriod = 1f;
+    const float cooldownPeriod = 2f;
+    bool isTurnedRight = false;
 	
 	void Start ()
     {
@@ -32,7 +33,6 @@ public class GroundedEnnemies : AI
         Debug.Log(cooldown);
         direction = (player.transform.position - transform.position).normalized;
         movement = new Vector2(speed * direction.x, 0.0f);
-        cooldown += Time.deltaTime;
 
         if (Vector3.Distance(transform.position, player.transform.position) < maxRange)          
         {
@@ -44,13 +44,22 @@ public class GroundedEnnemies : AI
         }
         if(detect && Vector3.Distance(transform.position, player.transform.position) <= minRange && !hit)
         {
-            if(cooldown >= cooldownPeriod)
+            cooldown += Time.deltaTime;
+            if (cooldown >= cooldownPeriod)
             {
                 hitTimer = 0.0f;
                 cooldown = 0.0f;
                 hit = true;
                 AttackDirection();
             }         
+        }
+        if(body.velocity.x > 0 && !isTurnedRight)
+        {
+            Flip();
+        }
+        if (body.velocity.x < 0 && isTurnedRight)
+        {
+            Flip();
         }
     }
 
@@ -86,5 +95,13 @@ public class GroundedEnnemies : AI
             hitZones[1].enabled = true;
         }
     }
-    
+
+    void Flip()
+    {
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+        isTurnedRight = !isTurnedRight;
+    }
+
 }

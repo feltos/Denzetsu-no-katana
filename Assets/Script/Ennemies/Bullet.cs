@@ -19,6 +19,7 @@ public class Bullet : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player");
         direction = (player.transform.position - transform.position).normalized;
+        Destroy(gameObject,5f);
     }
 	
 	void Update ()

@@ -14,15 +14,15 @@ public class FlyingEnemy : AI
     float preparingTimer = 0.0f;
     float preparingCooldown = 1f;
     bool alreadyAttack = false;
+    bool isTurnedRight = false;
 	
     enum State
     {
         NOT_DETECTED,
-        DETECTED,
         PREPARING,
         ATTACK
     }
-    State state = State.NOT_DETECTED;
+    [SerializeField]State state = State.NOT_DETECTED;
 	void Start ()
     {
         player = GameObject.Find("Player");
@@ -32,55 +32,69 @@ public class FlyingEnemy : AI
 	void Update ()
     {
         Vector3 deltaPos = Camera.main.transform.position - previousCameraPos;
+        float rightCameraBoundX = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect;
+        float leftCameraBoundX = Camera.main.transform.position.x - Camera.main.orthographicSize * Camera.main.aspect;
         switch (state)
         {
             case State.NOT_DETECTED:
-                float cameraBoundPosX = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect;
-                if(transform.position.x + spriteRenderer.bounds.size.x/2 + offsetX < cameraBoundPosX)
+               
+                if(transform.position.x + spriteRenderer.bounds.size.x/2 + offsetX < rightCameraBoundX)
                 {
-                    state = State.DETECTED;                           
+                    state = State.PREPARING;                           
                 }
                 break;
-                
-            case State.DETECTED:
-                
-                if(!alreadyAttack)
-                {
-                    transform.position += deltaPos;
-                }
-
-                if (alreadyAttack)
-                {
-                    Debug.Log("detected");
-                    transform.position += deltaPos *-2;
-                }                    
-                state = State.PREPARING;
-
-                break;
+                                
             case State.PREPARING:
                 preparingTimer += Time.deltaTime;
-                if (!alreadyAttack)
-                {
-                    transform.position += deltaPos;
-                }
-
-                if (alreadyAttack)
-                {
-                    transform.position += deltaPos * -2;
-                }
+                transform.position += deltaPos;
                 if (preparingTimer >= preparingCooldown)
                 {
                     state = State.ATTACK;
                     preparingTimer = 0.0f;
                 }
                 break;
-                case State.ATTACK:
+
+            case State.ATTACK:
                 {
-                    alreadyAttack = true;
-                    state = State.DETECTED;
+                    if(!alreadyAttack)
+                    {
+                        transform.position += new Vector3(-0.5f, 0, 0);
+                        if (transform.position.x - spriteRenderer.bounds.size.x / 2 + offsetX < leftCameraBoundX)
+                        {
+                            transform.position += deltaPos;
+                            alreadyAttack = true;
+                            state = State.PREPARING;
+                        }
+                    }
+                    if (alreadyAttack)
+                    {
+                        transform.position += new Vector3(0.5f, 0, 0);
+                        if (transform.position.x + spriteRenderer.bounds.size.x /2 + offsetX < rightCameraBoundX)
+                        {
+                            transform.position += deltaPos;
+                            alreadyAttack = false;
+                            state = State.PREPARING;
+                        }
+                    }
                 }
-                break;
+                    break;
         }
         previousCameraPos = Camera.main.transform.position;
+          if(body.velocity.x > 0 && !isTurnedRight)
+        {
+            Flip();
+        }
+        if (body.velocity.x < 0 && isTurnedRight)
+        {
+            Flip();
+        }
 	}
+
+    void Flip()
+    {
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+        isTurnedRight = !isTurnedRight;
+    }
 }
