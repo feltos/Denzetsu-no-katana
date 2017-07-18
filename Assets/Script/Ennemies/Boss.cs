@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
 {
 
     [SerializeField]
     float speed;
-    Vector2 direction;
+    float basicSpeed;
+    [SerializeField]
+    float chargeSpeed;
+    Vector2 playerDirection;
     Vector2 movement;
     [SerializeField]
     Rigidbody2D body;
@@ -37,32 +41,56 @@ public class Boss : MonoBehaviour
     [SerializeField]
     GameObject shootZone;
     [SerializeField]
-    GameObject laserBeam;
-    
+    GameObject bigBbullet;
+
+    [SerializeField]
+    GameObject leftWall;
+    [SerializeField]
+    GameObject rightWall;
+    Vector2 leftWallDirection;
+    Vector2 rightWallDirection;
+    bool hitWall = false;
+    float stuckTimer;
+    const float stuckPeriod = 5f;
+    bool charging = false;
 
     bool distanceAttack = false;
+    [SerializeField]
+    BoxCollider2D mainBox;
+
+
+    [SerializeField]
+    float health;
+    [SerializeField]
+    Slider healthBar;
+    [SerializeField]
+    GameManager gameManager;
 
     enum State
     {
         MOVING,
         CAC,
         DISTANCE,
-        CHARGE
+        CHARGE,
+        DEAD
     }
     State state = State.MOVING;
 
     void Start ()
     {
         player = GameObject.Find("Player");
+        basicSpeed = speed;
     }
 	
 	void Update ()
     {
-        
-        direction = (player.transform.position - transform.position).normalized;
-        movement = new Vector2(speed * direction.x, 0.0f);
+        Debug.Log(stuckTimer);
+        playerDirection = (player.transform.position - transform.position).normalized;
+        leftWallDirection = (leftWall.transform.position - transform.position).normalized;
+        rightWallDirection = (rightWall.transform.position - transform.position).normalized;
+        movement = new Vector2(basicSpeed * playerDirection.x, 0.0f);
 
-        if (Vector3.Distance(transform.position, player.transform.position) <= minRange)
+        if (Vector3.Distance(transform.position, player.transform.position) <= minRange && !charging)
         {
             state = State.CAC;
         }
@@ -79,15 +107,21 @@ public class Boss : MonoBehaviour
         {
             Flip();
         }
+        if(health <= 0)
+        {
+            state = State.DEAD;
+        }
         switch(state)
         {
             case State.MOVING:
                 cooldownBeforeSwitchAttack += Time.deltaTime;
+                speed = basicSpeed;
                 if(cooldownBeforeSwitchAttack >= periodBeforeSwitchAttack)
                 {
                     state = (State)Random.Range(2,4);
                     cooldownBeforeMove = 0.0f;
                     cooldownBeforeSwitchAttack = 0.0f;
+                    stuckTimer = 0.0f;
                     distanceAttack = true;
                 }
                 break;
@@ -106,16 +140,38 @@ public class Boss : MonoBehaviour
 
             case State.DISTANCE:
                 cooldownBeforeMove += Time.deltaTime;
-                Instantiate(laserBeam, shootZone.transform.position, transform.rotation);
+                Instantiate(bigBbullet, shootZone.transform.position, transform.rotation);
                 if(cooldownBeforeMove >= periodBeforeMove)
                 {
                     distanceAttack = false;
-                    cooldownBeforeSwitchAttack = 0.0f;
                     state = State.MOVING;
                 }
                 break;
 
             case State.CHARGE:
+                charging = true;
+                if(player.transform.position.x < transform.position.x && !hitWall)
+                {
+                    body.velocity = new Vector2(leftWallDirection.x * chargeSpeed,0.0f);
+                }
+                if (player.transform.position.x > transform.position.x && !hitWall)
+                {
+                    body.velocity = new Vector2(rightWallDirection.x * chargeSpeed, 0.0f);
+                }
+                if(hitWall)
+                {
+                    stuckTimer += Time.deltaTime;
+                }
+                if(stuckTimer >= stuckPeriod)
+                {
+                    charging = false;
+                    distanceAttack = false;
+                    hitWall = false;
+                    state = State.MOVING;
+                }
+                break;
+            case State.DEAD:
+                gameManager.StartFadeOut();
                 break;
         }
     }
@@ -151,5 +207,18 @@ public class Boss : MonoBehaviour
     void AttackDirection()
     {      
         hitZones[0].enabled = true;
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Wall") && collision.IsTouching(mainBox) && state == State.CHARGE)
+        {
+            hitWall = true;
+            body.velocity = Vector3.zero;
+        }
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Player") && collision.isTrigger)
+        {
+            health -= 1;
+            healthBar.value -= 1;
+        }
     }
 }
