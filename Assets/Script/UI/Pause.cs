@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseManager : MonoBehaviour
+public class Pause : MonoBehaviour
 {
     bool paused = false;
     [SerializeField]

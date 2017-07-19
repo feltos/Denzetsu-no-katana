@@ -21,7 +21,7 @@ public class Boss : MonoBehaviour
     [SerializeField]
     float minRange;
     [SerializeField]
-    BoxCollider2D[] hitZones = new BoxCollider2D[2];
+    BoxCollider2D hitZone;
     float cooldownBeforeCac;
     const float periodBeforeCac = 1f;
 
@@ -32,7 +32,7 @@ public class Boss : MonoBehaviour
     const float periodBeforeSwitchAttack = 3f;
 
     float cooldownBeforeMove;
-    const float periodBeforeMove = 2f;
+    const float periodBeforeMove = 1f;
 
     bool hit = false;
     float hitTimer;
@@ -51,7 +51,7 @@ public class Boss : MonoBehaviour
     Vector2 rightWallDirection;
     bool hitWall = false;
     float stuckTimer;
-    const float stuckPeriod = 5f;
+    const float stuckPeriod = 3f;
     bool charging = false;
 
     bool distanceAttack = false;
@@ -84,7 +84,6 @@ public class Boss : MonoBehaviour
 	
 	void Update ()
     {
-        Debug.Log(stuckTimer);
         playerDirection = (player.transform.position - transform.position).normalized;
         leftWallDirection = (leftWall.transform.position - transform.position).normalized;
         rightWallDirection = (rightWall.transform.position - transform.position).normalized;
@@ -188,10 +187,7 @@ public class Boss : MonoBehaviour
         }
         if (hitTimer >= hitPeriod)
         {
-            for (int i = 0; i < hitZones.Length; i++)
-            {
-                hitZones[i].enabled = false;
-            }
+            hitZone.enabled = false;
             hit = false;
         }
     }
@@ -206,7 +202,7 @@ public class Boss : MonoBehaviour
 
     void AttackDirection()
     {      
-        hitZones[0].enabled = true;
+        hitZone.enabled = true;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -49,14 +49,6 @@ public class PlayerCharacter : MonoBehaviour
 
     [SerializeField]
     Slider healthBar;
-    [SerializeField]
-    GameObject attackUp;
-    [SerializeField]
-    GameObject attackDown;
-    [SerializeField]
-    GameObject attackLeft;
-    [SerializeField]
-    GameObject attackRight;
 
     void Start ()
     {
@@ -150,21 +142,15 @@ public class PlayerCharacter : MonoBehaviour
     }
     void AttackDirection()
     {
-        if(horizontal > 0)
-        {
-            hitZones[0].enabled = true;           
-        }
-        if (horizontal < 0)
+        hitZones[0].enabled = true;           
+        
+        if(vertical > 0)
         {
             hitZones[1].enabled = true;
         }
-        if(vertical > 0)
-        {
-            hitZones[2].enabled = true;
-        }
         if (vertical < 0)
         {
-            hitZones[3].enabled = true;
+            hitZones[2].enabled = true;
         }
     }
 

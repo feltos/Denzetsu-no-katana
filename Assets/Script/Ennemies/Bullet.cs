@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player");
         direction = (player.transform.position - transform.position).normalized;
-        Destroy(gameObject,5f);
+        Destroy(gameObject,3f);
     }
 	
 	void Update ()
@@ -37,7 +37,11 @@ public class Bullet : MonoBehaviour
         {
             ChangeDirection();
         }
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            Destroy(gameObject);
+        }
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Bullet") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy") && hit)
         {
             Destroy(gameObject);
         }

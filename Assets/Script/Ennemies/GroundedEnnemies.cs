@@ -15,7 +15,7 @@ public class GroundedEnnemies : AI
     [SerializeField]
     float minRange;
     [SerializeField]
-    BoxCollider2D[] hitZones = new BoxCollider2D[2];
+    BoxCollider2D hitZone;
     bool hit = false;
     float hitTimer;
     const float hitPeriod = 0.1f;
@@ -75,25 +75,15 @@ public class GroundedEnnemies : AI
         }  
         if(hitTimer >= hitPeriod)
         {
-            for (int i = 0; i < hitZones.Length; i++)
-            {
-                hitZones[i].enabled = false;
-            }
+            hitZone.enabled = false;
             hit = false;
         }
                  
     }
 
     void AttackDirection()
-    { 
-        if (player.transform.position.x < transform.position.x)
-        {
-            hitZones[0].enabled = true;
-        }
-        if (player.transform.position.x > transform.position.x)
-        {
-            hitZones[1].enabled = true;
-        }
+    {        
+        hitZone.enabled = true;          
     }
 
     void Flip()

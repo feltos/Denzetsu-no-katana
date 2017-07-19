@@ -15,7 +15,7 @@ public class DistanceEnemy : AI
     Rigidbody2D body;
 
     float fireCooldown = 0.0f;
-    float firePeriod = 1.2f;
+    float firePeriod = 0.8f;
 
     [SerializeField]
     GameObject bullet;
@@ -46,7 +46,6 @@ public class DistanceEnemy : AI
         if (detect && Vector3.Distance(transform.position, player.transform.position) <= midRange)
         {
             fireCooldown += Time.deltaTime;
-            Debug.Log(fireCooldown);
             if (fireCooldown >= firePeriod)
             {
                 Instantiate(bullet, transform.position, transform.rotation);
