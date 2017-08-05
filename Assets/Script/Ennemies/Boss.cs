@@ -53,6 +53,8 @@ public class Boss : MonoBehaviour
     float stuckTimer;
     const float stuckPeriod = 3f;
     bool charging = false;
+    bool rightCharge = false;
+    bool leftCharge = false;
 
     bool distanceAttack = false;
     [SerializeField]
@@ -122,6 +124,8 @@ public class Boss : MonoBehaviour
                     cooldownBeforeSwitchAttack = 0.0f;
                     stuckTimer = 0.0f;
                     distanceAttack = true;
+                    rightCharge = false;
+                    leftCharge = false;
                 }
                 break;
 
@@ -149,13 +153,16 @@ public class Boss : MonoBehaviour
 
             case State.CHARGE:
                 charging = true;
-                if(player.transform.position.x < transform.position.x && !hitWall)
+                int i = 0;
+                if (player.transform.position.x < transform.position.x && !hitWall && i < 1)
                 {
-                    body.velocity = new Vector2(leftWallDirection.x * chargeSpeed,0.0f);
+                    leftCharge = true;
+                    i = 1;  
                 }
-                if (player.transform.position.x > transform.position.x && !hitWall)
+                if (player.transform.position.x > transform.position.x && !hitWall && i < 1)
                 {
-                    body.velocity = new Vector2(rightWallDirection.x * chargeSpeed, 0.0f);
+                    rightCharge = true;
+                    i = 1;    
                 }
                 if(hitWall)
                 {
@@ -166,6 +173,7 @@ public class Boss : MonoBehaviour
                     charging = false;
                     distanceAttack = false;
                     hitWall = false;
+                    i = 0;
                     state = State.MOVING;
                 }
                 break;
@@ -180,6 +188,14 @@ public class Boss : MonoBehaviour
         if(state == State.MOVING)
         {
             body.velocity = movement;
+        }
+        if(state == State.CHARGE && leftCharge)
+        {
+            body.velocity = new Vector2(leftWallDirection.x * chargeSpeed, 0.0f);
+        }
+        if (state == State.CHARGE && rightCharge)
+        {
+            body.velocity = new Vector2(rightWallDirection.x * chargeSpeed, 0.0f);
         }
         if (hit)
         {

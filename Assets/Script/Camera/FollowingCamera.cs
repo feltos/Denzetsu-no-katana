@@ -13,8 +13,6 @@ public class FollowingCamera : MonoBehaviour
     public float maxPosY;
     public float minPosX;
     public float maxPosX;
-    [SerializeField]
-    GameManager gameManager;
 
 	void Start ()
     {

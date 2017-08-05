@@ -30,7 +30,6 @@ public class GroundedEnnemies : AI
    
 	void Update ()
     {
-        Debug.Log(cooldown);
         direction = (player.transform.position - transform.position).normalized;
         movement = new Vector2(speed * direction.x, 0.0f);
 
@@ -65,7 +64,7 @@ public class GroundedEnnemies : AI
 
     void FixedUpdate()
     {
-        if (detect && Vector3.Distance(transform.position, player.transform.position) > minRange)
+        if (detect && Vector3.Distance(transform.position, player.transform.position) > minRange && !fall)
         {
             body.velocity = movement;
         }
@@ -93,5 +92,4 @@ public class GroundedEnnemies : AI
         transform.localScale = theScale;
         isTurnedRight = !isTurnedRight;
     }
-
 }

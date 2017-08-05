@@ -64,7 +64,7 @@ public class DistanceEnemy : AI
 
     void FixedUpdate()
     {
-        if (detect && Vector3.Distance(transform.position, player.transform.position) > minRange)
+        if (detect && Vector3.Distance(transform.position, player.transform.position) > minRange && !fall)
         {
             body.velocity = movement;
         }
