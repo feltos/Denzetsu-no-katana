@@ -16,7 +16,7 @@ public class Boss : MonoBehaviour
     [SerializeField]
     Rigidbody2D body;
     GameObject player;
-    bool isTurnedRight = false;
+    [SerializeField]bool isTurnedRight = false;
 
     [SerializeField]
     float minRange;
@@ -67,6 +67,8 @@ public class Boss : MonoBehaviour
     Slider healthBar;
     [SerializeField]
     GameManager gameManager;
+    [SerializeField]
+    GameObject katana;
 
     enum State
     {
@@ -80,12 +82,13 @@ public class Boss : MonoBehaviour
 
     void Start ()
     {
-        player = GameObject.Find("Player");
         basicSpeed = speed;
     }
 	
 	void Update ()
     {
+        player = GameObject.Find("Player");
+        Debug.Log(player.transform.position.x - transform.position.x);
         playerDirection = (player.transform.position - transform.position).normalized;
         leftWallDirection = (leftWall.transform.position - transform.position).normalized;
         rightWallDirection = (rightWall.transform.position - transform.position).normalized;
@@ -153,16 +156,18 @@ public class Boss : MonoBehaviour
 
             case State.CHARGE:
                 charging = true;
-                int i = 0;
-                if (player.transform.position.x < transform.position.x && !hitWall && i < 1)
+                for(int i = 0; i < 1; i++)
                 {
-                    leftCharge = true;
-                    i = 1;  
-                }
-                if (player.transform.position.x > transform.position.x && !hitWall && i < 1)
-                {
-                    rightCharge = true;
-                    i = 1;    
+                    if (isTurnedRight)
+                    {
+                        rightCharge = true;
+
+                    }
+                    else
+                    {
+                        leftCharge = true;
+                    }
+                   
                 }
                 if(hitWall)
                 {
@@ -173,7 +178,6 @@ public class Boss : MonoBehaviour
                     charging = false;
                     distanceAttack = false;
                     hitWall = false;
-                    i = 0;
                     state = State.MOVING;
                 }
                 break;
@@ -193,7 +197,7 @@ public class Boss : MonoBehaviour
         {
             body.velocity = new Vector2(leftWallDirection.x * chargeSpeed, 0.0f);
         }
-        if (state == State.CHARGE && rightCharge)
+        if (state == State.CHARGE &&rightCharge)
         {
             body.velocity = new Vector2(rightWallDirection.x * chargeSpeed, 0.0f);
         }
