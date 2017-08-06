@@ -15,7 +15,7 @@ public class DistanceEnemy : AI
     Rigidbody2D body;
 
     float fireCooldown = 0.0f;
-    float firePeriod = 0.8f;
+    float firePeriod = 1.2f;
 
     [SerializeField]
     GameObject bullet;
