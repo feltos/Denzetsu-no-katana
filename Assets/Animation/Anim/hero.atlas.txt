@@ -1,0 +1,139 @@
+
+hero.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Bras
+  rotate: true
+  xy: 803, 219
+  size: 35, 88
+  orig: 35, 88
+  offset: 0, 0
+  index: -1
+Bras Droit
+  rotate: false
+  xy: 657, 185
+  size: 63, 69
+  orig: 63, 69
+  offset: 0, 0
+  index: -1
+Chapeau
+  rotate: false
+  xy: 2, 11
+  size: 143, 77
+  orig: 143, 77
+  offset: 0, 0
+  index: -1
+Cheveux arriere
+  rotate: true
+  xy: 657, 134
+  size: 49, 63
+  orig: 49, 63
+  offset: 0, 0
+  index: -1
+Cheveux avant
+  rotate: true
+  xy: 247, 26
+  size: 62, 78
+  orig: 62, 78
+  offset: 0, 0
+  index: -1
+Correspondance de couleur 3 copie 9
+  rotate: true
+  xy: 340, 116
+  size: 138, 184
+  orig: 138, 184
+  offset: 0, 0
+  index: -1
+Cuisse droit
+  rotate: false
+  xy: 604, 153
+  size: 51, 101
+  orig: 51, 101
+  offset: 0, 0
+  index: -1
+CuisseGauche
+  rotate: true
+  xy: 147, 25
+  size: 63, 98
+  orig: 63, 98
+  offset: 0, 0
+  index: -1
+ImageUnique
+  rotate: true
+  xy: 2, 90
+  size: 164, 336
+  orig: 164, 336
+  offset: 0, 0
+  index: -1
+Jambe droite
+  rotate: true
+  xy: 722, 207
+  size: 47, 79
+  orig: 47, 79
+  offset: 0, 0
+  index: -1
+Jambe gauche
+  rotate: true
+  xy: 893, 225
+  size: 29, 89
+  orig: 29, 89
+  offset: 0, 0
+  index: -1
+Main
+  rotate: false
+  xy: 984, 225
+  size: 30, 29
+  orig: 30, 29
+  offset: 0, 0
+  index: -1
+Main Droit
+  rotate: false
+  xy: 327, 58
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: -1
+Pied Droit
+  rotate: false
+  xy: 340, 90
+  size: 40, 24
+  orig: 40, 24
+  offset: 0, 0
+  index: -1
+Pied gauche
+  rotate: false
+  xy: 147, 2
+  size: 24, 21
+  orig: 24, 21
+  offset: 0, 0
+  index: -1
+Torse
+  rotate: false
+  xy: 526, 144
+  size: 76, 110
+  orig: 76, 110
+  offset: 0, 0
+  index: -1
+Visage
+  rotate: false
+  xy: 722, 117
+  size: 53, 43
+  orig: 53, 43
+  offset: 0, 0
+  index: -1
+Yeux Fermer
+  rotate: false
+  xy: 722, 162
+  size: 57, 43
+  orig: 57, 43
+  offset: 0, 0
+  index: -1
+echarpe
+  rotate: false
+  xy: 526, 105
+  size: 63, 37
+  orig: 63, 37
+  offset: 0, 0
+  index: -1

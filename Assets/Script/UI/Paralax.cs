@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Paralax : MonoBehaviour
 {
-   float offset;
+    float offset;
     [SerializeField]
     float speed;
+    Vector3 previousCameraPos;
 
-	void Update ()
+    void Update ()
     {
-        offset += Input.GetAxis("Horizontal") * speed;
+        Vector3 deltaPos = Camera.main.transform.position - previousCameraPos;
+        offset += deltaPos.x * speed;
         GetComponent<Renderer>().material.SetTextureOffset("_MainTex", new Vector2(offset, 0));
-	}
+        previousCameraPos = Camera.main.transform.position;
+    }
 }

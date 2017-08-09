@@ -23,7 +23,7 @@ public class AI : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-      if(collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+      if(collision.gameObject.layer == LayerMask.NameToLayer("Player") && collision.isTrigger)
         {
             Destroy(gameObject);
         }
