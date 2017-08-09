@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Spine.Unity;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -45,10 +46,16 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]bool knockFromRight;
     bool getKnockback = false;
     float knockbackTimer;
-    const float knockbackPeriod = 1f;
+    const float knockbackPeriod = 0.5f;
 
     [SerializeField]
     Slider healthBar;
+
+    [SerializeField]
+    SkeletonAnimation playerAnim;
+    float animationTimer;
+    float animationCooldown = 1f;
+    float walkDeadZone = 0.01f;
 
     void Start ()
     {
@@ -108,6 +115,7 @@ public class PlayerCharacter : MonoBehaviour
             body.velocity = Vector2.zero;
             speed = 0;
         }
+        Anim(horizontal);
     }
     void FixedUpdate()
     {
@@ -236,6 +244,19 @@ public class PlayerCharacter : MonoBehaviour
                 knockFromRight = false;
             }
         }   
+    }
+    void Anim(float horizontal)
+    {
+        if(Mathf.Abs(horizontal) >= walkDeadZone)
+        {
+            playerAnim.loop = true;
+            playerAnim.AnimationName = "Course";
+        }
+        else
+        {
+            playerAnim.loop = true;
+            playerAnim.AnimationName = "StandBy";
+        }
     }
 }
 
