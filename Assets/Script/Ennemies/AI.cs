@@ -25,7 +25,8 @@ public class AI : MonoBehaviour
     {
       if(collision.gameObject.layer == LayerMask.NameToLayer("Player") && collision.isTrigger)
         {
-            Destroy(gameObject);
+            Destroy(GetComponent<Collider2D>());
+            Destroy(gameObject,0.3f);
         }
 
         Bullet bullet = collision.gameObject.GetComponent<Bullet>();

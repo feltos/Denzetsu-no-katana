@@ -18,7 +18,8 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]
     BoxCollider2D[]hitZones = new BoxCollider2D[4];
     float hitTimer = 0.0f;
-    const float hitPeriod = 0.1f;
+    const float hitPeriod = 0.3f;
+
     bool hit = false;
 
     [SerializeField]GroundCheck groundCheck;
@@ -51,11 +52,12 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]
     Slider healthBar;
 
-    [SerializeField]
-    SkeletonAnimation playerAnim;
     float animationTimer;
     float animationCooldown = 1f;
     float walkDeadZone = 0.01f;
+
+    [SerializeField]
+    Animator animator;
 
     void Start ()
     {
@@ -67,6 +69,7 @@ public class PlayerCharacter : MonoBehaviour
 
     void Update()
     {
+
         if(getKnockback)
         {
             knockbackTimer += Time.deltaTime;
@@ -88,22 +91,33 @@ public class PlayerCharacter : MonoBehaviour
         {
             Flip();
         }
+        if(horizontal > 0 || horizontal < 0)
+        {
+            animator.SetInteger("Deplacement", 1);
+        }
+        if(horizontal == 0)
+        {
+            animator.SetInteger("Deplacement", 0);
+        }
         if(Input.GetButtonDown("Fire1"))
         {
+            animator.SetInteger("Attaque", 1);
             hit = true;
             hitTimer = 0.0f;
-            AttackDirection();                        
+            hitZones[0].enabled = true;                  
         }
        if(Input.GetButtonDown("Jump") && groundCheck.GetGroundedValue() >= 1)
         {
             body.velocity = new Vector2(body.velocity.x, jump);
+            animator.SetInteger("State",2);
         }
         if (Input.GetButtonDown("Jump") && OnWall)
         {
             speed = basicSpeed;
             body.gravityScale = basicGravityScale;
             body.velocity = new Vector2(horizontalMovement, jump);
-            OnWall = false;           
+            OnWall = false;
+            animator.SetInteger("State",2);
         }
         if(health <= 0)
         {
@@ -115,7 +129,6 @@ public class PlayerCharacter : MonoBehaviour
             body.velocity = Vector2.zero;
             speed = 0;
         }
-        Anim(horizontal);
     }
     void FixedUpdate()
     {
@@ -144,24 +157,11 @@ public class PlayerCharacter : MonoBehaviour
             for (int i = 0; i < hitZones.Length; i++)
             {
                 hitZones[i].enabled = false;
+                animator.SetInteger("Attaque", 0);
             }
             hit = false;
         }
     }
-    void AttackDirection()
-    {
-        hitZones[0].enabled = true;           
-        
-        if(vertical > 0)
-        {
-            hitZones[1].enabled = true;
-        }
-        if (vertical < 0)
-        {
-            hitZones[2].enabled = true;
-        }
-    }
-
     void OnCollisionEnter2D(Collision2D collider)
     {
         if(collider.gameObject.layer == LayerMask.NameToLayer("Wall") && groundCheck.GetGroundedValue() <= 0)
@@ -244,19 +244,6 @@ public class PlayerCharacter : MonoBehaviour
                 knockFromRight = false;
             }
         }   
-    }
-    void Anim(float horizontal)
-    {
-        if(Mathf.Abs(horizontal) >= walkDeadZone)
-        {
-            playerAnim.loop = true;
-            playerAnim.AnimationName = "Course";
-        }
-        else
-        {
-            playerAnim.loop = true;
-            playerAnim.AnimationName = "StandBy";
-        }
     }
 }
 
