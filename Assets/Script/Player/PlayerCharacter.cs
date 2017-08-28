@@ -18,7 +18,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]
     BoxCollider2D[]hitZones = new BoxCollider2D[4];
     float hitTimer = 0.0f;
-    const float hitPeriod = 0.3f;
+    const float hitPeriod = 0.1f;
 
     bool hit = false;
 
@@ -52,8 +52,6 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]
     Slider healthBar;
 
-    float animationTimer;
-    float animationCooldown = 1f;
     float walkDeadZone = 0.01f;
 
     [SerializeField]

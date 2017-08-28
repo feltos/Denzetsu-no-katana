@@ -1,0 +1,130 @@
+
+skeleton.png
+size: 4096,4096
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Brasdroithaut
+  rotate: false
+  xy: 2, 1388
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Brasdroitmilieu
+  rotate: false
+  xy: 2052, 3438
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Brasgauchehaut
+  rotate: false
+  xy: 2, 926
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Brasgauchemilieu
+  rotate: false
+  xy: 248, 1388
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Ceinture_anim
+  rotate: false
+  xy: 2052, 2976
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Ceinture_fixe
+  rotate: false
+  xy: 2298, 3438
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Corps
+  rotate: false
+  xy: 2, 464
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Cuissedroite
+  rotate: false
+  xy: 248, 926
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Jambedroite
+  rotate: false
+  xy: 494, 1388
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Maindroite
+  rotate: false
+  xy: 2052, 2514
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Maingauche
+  rotate: false
+  xy: 2298, 2976
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Pieddroit
+  rotate: false
+  xy: 2544, 3438
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+Rayon1
+  rotate: false
+  xy: 2, 1850
+  size: 2048, 2048
+  orig: 2048, 2048
+  offset: 0, 0
+  index: -1
+Tete
+  rotate: false
+  xy: 2, 2
+  size: 244, 460
+  orig: 244, 460
+  offset: 0, 0
+  index: -1
+
+skeleton2.png
+size: 4096,4096
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Rayon2
+  rotate: false
+  xy: 2, 2
+  size: 2048, 2048
+  orig: 2048, 2048
+  offset: 0, 0
+  index: -1
+
+skeleton3.png
+size: 4096,4096
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Rayon3
+  rotate: false
+  xy: 2, 2
+  size: 2048, 2048
+  orig: 2048, 2048
+  offset: 0, 0
+  index: -1

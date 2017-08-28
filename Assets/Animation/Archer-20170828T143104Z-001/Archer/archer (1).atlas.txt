@@ -1,0 +1,118 @@
+
+archer (1).png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arc_color
+  rotate: false
+  xy: 2, 48
+  size: 178, 60
+  orig: 178, 60
+  offset: 0, 0
+  index: -1
+avant_bras_droite
+  rotate: false
+  xy: 504, 158
+  size: 27, 74
+  orig: 27, 74
+  offset: 0, 0
+  index: -1
+avant_bras_gauche
+  rotate: false
+  xy: 542, 291
+  size: 33, 65
+  orig: 33, 65
+  offset: 0, 0
+  index: -1
+biceps gauche_color
+  rotate: true
+  xy: 583, 369
+  size: 35, 53
+  orig: 35, 53
+  offset: 0, 0
+  index: -1
+biceps_droite_color
+  rotate: false
+  xy: 639, 460
+  size: 33, 50
+  orig: 33, 50
+  offset: 0, 0
+  index: -1
+body_color
+  rotate: false
+  xy: 504, 358
+  size: 77, 152
+  orig: 77, 152
+  offset: 0, 0
+  index: -1
+carquois_color
+  rotate: true
+  xy: 303, 65
+  size: 43, 61
+  orig: 43, 61
+  offset: 0, 0
+  index: -1
+chapeau_color
+  rotate: false
+  xy: 92, 13
+  size: 75, 33
+  orig: 75, 33
+  offset: 0, 0
+  index: -1
+corde_arc_color
+  rotate: true
+  xy: 504, 234
+  size: 122, 36
+  orig: 122, 36
+  offset: 0, 0
+  index: -1
+cuisse_droite_color
+  rotate: true
+  xy: 2, 2
+  size: 44, 88
+  orig: 44, 88
+  offset: 0, 0
+  index: -1
+cuisse_gauche_color
+  rotate: false
+  xy: 583, 406
+  size: 54, 104
+  orig: 54, 104
+  offset: 0, 0
+  index: -1
+eye_color
+  rotate: false
+  xy: 182, 52
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+fleche
+  rotate: false
+  xy: 2, 110
+  size: 500, 400
+  orig: 500, 400
+  offset: 0, 0
+  index: -1
+head_color
+  rotate: false
+  xy: 366, 66
+  size: 31, 42
+  orig: 31, 42
+  offset: 0, 0
+  index: -1
+lunette_color
+  rotate: true
+  xy: 542, 239
+  size: 50, 19
+  orig: 50, 19
+  offset: 0, 0
+  index: -1
+tibia_gauche_color
+  rotate: true
+  xy: 182, 62
+  size: 46, 119
+  orig: 46, 119
+  offset: 0, 0
+  index: -1
