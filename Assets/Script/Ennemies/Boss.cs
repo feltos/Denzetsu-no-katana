@@ -56,6 +56,10 @@ public class Boss : MonoBehaviour
     GameManager gameManager;
     [SerializeField]
     SkeletonAnimation anim;
+    float laserTimer;
+    const float laserPeriod = 1f;
+    [SerializeField]
+    BoxCollider2D hitZone;
 
     enum State
     {
@@ -75,7 +79,6 @@ public class Boss : MonoBehaviour
 	
 	void Update ()
     {
-        Debug.Log(health);
         player = GameObject.Find("Player");
         Debug.Log(player.transform.position.x - transform.position.x);
         playerDirection = (player.transform.position - transform.position).normalized;
@@ -115,14 +118,21 @@ public class Boss : MonoBehaviour
                     distanceAttack = true;
                     rightCharge = false;
                     leftCharge = false;
+                    laserTimer = 0.0f;
                 }
                 break;
 
             case State.DISTANCE:
                 cooldownBeforeMove += Time.deltaTime;
+                laserTimer += Time.deltaTime;
                 anim.AnimationName = "Attaque_Rayon";
+                if(laserTimer >= laserPeriod)
+                {
+                    hitZone.enabled = true;
+                }
                 if(cooldownBeforeMove >= periodBeforeMove)
                 {
+                    hitZone.enabled = false;
                     distanceAttack = false;
                     state = State.MOVING;
                 }

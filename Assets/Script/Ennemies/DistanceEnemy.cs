@@ -16,7 +16,7 @@ public class DistanceEnemy : AI
     Rigidbody2D body;
 
     float fireCooldown = 0.0f;
-    float firePeriod = 1.2f;
+    float firePeriod = 2f;
 
     [SerializeField]
     GameObject bullet;
@@ -39,7 +39,7 @@ public class DistanceEnemy : AI
     {  
         direction = (player.transform.position - transform.position).normalized;
         movement = new Vector2(direction.x * speed, 0.0f);
-	    if(Vector3.Distance(transform.position,player.transform.position) < maxRange)
+	    if(Vector3.Distance(transform.position,player.transform.position) <= maxRange && Vector3.Distance(transform.position, player.transform.position) > minRange)
         {
             detect = true;
             Anim.AnimationName = "marche";
@@ -48,12 +48,13 @@ public class DistanceEnemy : AI
         {
             detect = false;
         }
-        if (detect && Vector3.Distance(transform.position, player.transform.position) <= midRange)
+        if (detect && Vector3.Distance(transform.position, player.transform.position) <= minRange)
         {
+            Anim.AnimationName = "attaque";
             fireCooldown += Time.deltaTime;
             if (fireCooldown >= firePeriod)
             {
-                Instantiate(bullet, transform.position, transform.rotation);
+                Instantiate(bullet, shootZone.transform.position,shootZone.transform.rotation);
                 fireCooldown = 0.0f;
             }
         }

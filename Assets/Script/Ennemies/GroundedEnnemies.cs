@@ -21,12 +21,12 @@ public class GroundedEnnemies : AI
     float hitTimer;
     const float hitPeriod = 0.1f;
     float cooldown;
-    const float cooldownPeriod = 2f;
+    const float cooldownPeriod = 0.5f;
     bool isTurnedRight = false;
     [SerializeField]
     SkeletonAnimation anim;
-	
-	void Start ()
+
+    void Start ()
     {
         player = GameObject.Find("Player");
     }
@@ -36,25 +36,26 @@ public class GroundedEnnemies : AI
         direction = (player.transform.position - transform.position).normalized;
         movement = new Vector2(speed * direction.x, 0.0f);
 
-        if (Vector3.Distance(transform.position, player.transform.position) < maxRange)          
+        if (Vector3.Distance(transform.position, player.transform.position) < maxRange && Vector3.Distance(transform.position, player.transform.position) >= minRange)          
         {
             detect = true;
+            anim.loop = true;
             anim.AnimationName = "marche";                  
         }
         if (Vector3.Distance(transform.position,player.transform.position ) > maxRange)
         {
             detect = false;
         }
-        if(detect && Vector3.Distance(transform.position, player.transform.position) <= minRange && !hit)
+        if (detect && Vector3.Distance(transform.position, player.transform.position) <= minRange && !hit)
         {
+            anim.AnimationName = "attaque";
             cooldown += Time.deltaTime;
             if (cooldown >= cooldownPeriod)
             {
-                anim.AnimationName = "attaque";
                 hitTimer = 0.0f;
                 cooldown = 0.0f;
                 hit = true;
-                AttackDirection();
+                hitZone.enabled = true;
             }         
         }
         if(body.velocity.x > 0 && !isTurnedRight)
@@ -81,13 +82,7 @@ public class GroundedEnnemies : AI
         {
             hitZone.enabled = false;
             hit = false;
-        }
-                 
-    }
-
-    void AttackDirection()
-    {        
-        hitZone.enabled = true;          
+        }                
     }
 
     void Flip()

@@ -182,6 +182,10 @@ public class PlayerCharacter : MonoBehaviour
         {
             gameManager.Restart();
         }
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Boss"))
+        {
+            KnockbackEffect(collision.gameObject);
+        }
         if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && collision.IsTouching(m_MainBox))
         {
             KnockbackEffect(collision.gameObject);   
