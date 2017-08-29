@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 public class DistanceEnemy : AI
 {
@@ -22,6 +23,10 @@ public class DistanceEnemy : AI
     Vector2 bulletDirection;
 
     bool isTurnedRight = false;
+    [SerializeField]
+    GameObject shootZone;
+    [SerializeField]
+    SkeletonAnimation Anim;
 
 	void Start ()
     {
@@ -31,13 +36,13 @@ public class DistanceEnemy : AI
 	
 
 	void Update ()
-    {
-        
+    {  
         direction = (player.transform.position - transform.position).normalized;
         movement = new Vector2(direction.x * speed, 0.0f);
 	    if(Vector3.Distance(transform.position,player.transform.position) < maxRange)
         {
             detect = true;
+            Anim.AnimationName = "marche";
         }
         if (Vector3.Distance(transform.position, player.transform.position) > maxRange)
         {

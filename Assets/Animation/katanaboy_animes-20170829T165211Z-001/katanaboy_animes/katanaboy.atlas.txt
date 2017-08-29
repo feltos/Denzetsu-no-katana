@@ -1,0 +1,111 @@
+
+katanaboy.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+avant bras droite
+  rotate: true
+  xy: 154, 4
+  size: 63, 31
+  orig: 63, 31
+  offset: 0, 0
+  index: -1
+avant_bras_gauche
+  rotate: true
+  xy: 107, 2
+  size: 64, 45
+  orig: 64, 45
+  offset: 0, 0
+  index: -1
+biceps_droite
+  rotate: false
+  xy: 369, 184
+  size: 63, 69
+  orig: 63, 69
+  offset: 0, 0
+  index: -1
+biceps_gauche
+  rotate: false
+  xy: 434, 189
+  size: 55, 64
+  orig: 55, 64
+  offset: 0, 0
+  index: -1
+body_color
+  rotate: false
+  xy: 2, 68
+  size: 150, 185
+  orig: 150, 185
+  offset: 0, 0
+  index: -1
+cuisse gauche color
+  rotate: true
+  xy: 179, 84
+  size: 71, 98
+  orig: 71, 98
+  offset: 0, 0
+  index: -1
+cuisse_droite
+  rotate: false
+  xy: 282, 179
+  size: 85, 74
+  orig: 85, 74
+  offset: 0, 0
+  index: -1
+eye_color
+  rotate: false
+  xy: 491, 246
+  size: 7, 7
+  orig: 7, 7
+  offset: 0, 0
+  index: -1
+head_color
+  rotate: false
+  xy: 187, 33
+  size: 36, 49
+  orig: 36, 49
+  offset: 0, 0
+  index: -1
+lunette_colo
+  rotate: false
+  xy: 282, 162
+  size: 44, 15
+  orig: 44, 15
+  offset: 0, 0
+  index: -1
+main gauche color
+  rotate: false
+  xy: 187, 4
+  size: 31, 27
+  orig: 31, 27
+  offset: 0, 0
+  index: -1
+main_droite
+  rotate: false
+  xy: 225, 55
+  size: 29, 27
+  orig: 29, 27
+  offset: 0, 0
+  index: -1
+sword color
+  rotate: false
+  xy: 154, 69
+  size: 23, 184
+  orig: 23, 184
+  offset: 0, 0
+  index: -1
+tibia_droite
+  rotate: true
+  xy: 2, 5
+  size: 61, 103
+  orig: 61, 103
+  offset: 0, 0
+  index: -1
+tibia_gauche
+  rotate: false
+  xy: 179, 157
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Spine.Unity;
 
 public class Boss : MonoBehaviour
 {
-
     [SerializeField]
     float speed;
     float basicSpeed;
@@ -20,10 +20,6 @@ public class Boss : MonoBehaviour
 
     [SerializeField]
     float minRange;
-    [SerializeField]
-    BoxCollider2D hitZone;
-    float cooldownBeforeCac;
-    const float periodBeforeCac = 1f;
 
     float cooldownBeforeShoot;
     const float periodBeforeShoot = 2f;
@@ -32,16 +28,7 @@ public class Boss : MonoBehaviour
     const float periodBeforeSwitchAttack = 3f;
 
     float cooldownBeforeMove;
-    const float periodBeforeMove = 1f;
-
-    bool hit = false;
-    float hitTimer;
-    const float hitPeriod = 0.2f;
-
-    [SerializeField]
-    GameObject shootZone;
-    [SerializeField]
-    GameObject bigBbullet;
+    const float periodBeforeMove = 1.5f;
 
     [SerializeField]
     GameObject leftWall;
@@ -68,14 +55,15 @@ public class Boss : MonoBehaviour
     [SerializeField]
     GameManager gameManager;
     [SerializeField]
-    GameObject katana;
+    SkeletonAnimation anim;
 
     enum State
     {
         MOVING,
-        CAC,
         DISTANCE,
         CHARGE,
+        STUN,
+        WIN,
         DEAD
     }
     State state = State.MOVING;
@@ -87,6 +75,7 @@ public class Boss : MonoBehaviour
 	
 	void Update ()
     {
+        Debug.Log(health);
         player = GameObject.Find("Player");
         Debug.Log(player.transform.position.x - transform.position.x);
         playerDirection = (player.transform.position - transform.position).normalized;
@@ -94,10 +83,6 @@ public class Boss : MonoBehaviour
         rightWallDirection = (rightWall.transform.position - transform.position).normalized;
         movement = new Vector2(basicSpeed * playerDirection.x, 0.0f);
 
-        if (Vector3.Distance(transform.position, player.transform.position) <= minRange && !charging)
-        {
-            state = State.CAC;
-        }
         if (Vector3.Distance(transform.position, player.transform.position) > minRange && !distanceAttack)
         {
             state = State.MOVING;
@@ -120,9 +105,10 @@ public class Boss : MonoBehaviour
             case State.MOVING:
                 cooldownBeforeSwitchAttack += Time.deltaTime;
                 speed = basicSpeed;
-                if(cooldownBeforeSwitchAttack >= periodBeforeSwitchAttack)
+                anim.AnimationName = "Marche";
+                if (cooldownBeforeSwitchAttack >= periodBeforeSwitchAttack)
                 {
-                    state = (State)Random.Range(2,4);
+                    state = (State)Random.Range(1,3);
                     cooldownBeforeMove = 0.0f;
                     cooldownBeforeSwitchAttack = 0.0f;
                     stuckTimer = 0.0f;
@@ -132,21 +118,9 @@ public class Boss : MonoBehaviour
                 }
                 break;
 
-            case State.CAC:
-                cooldownBeforeCac += Time.deltaTime;
-                if(cooldownBeforeCac >= periodBeforeCac)
-                {
-                    hitTimer = 0.0f;
-                    hit = true;
-                    AttackDirection();
-                    cooldownBeforeCac = 0.0f;
-                    state = State.MOVING;
-                }
-                break;
-
             case State.DISTANCE:
                 cooldownBeforeMove += Time.deltaTime;
-                Instantiate(bigBbullet, shootZone.transform.position, transform.rotation);
+                anim.AnimationName = "Attaque_Rayon";
                 if(cooldownBeforeMove >= periodBeforeMove)
                 {
                     distanceAttack = false;
@@ -156,24 +130,28 @@ public class Boss : MonoBehaviour
 
             case State.CHARGE:
                 charging = true;
+                anim.AnimationName = "Charge";
                 for(int i = 0; i < 1; i++)
                 {
                     if (isTurnedRight)
                     {
                         rightCharge = true;
-
                     }
                     else
                     {
                         leftCharge = true;
-                    }
-                   
+                    }                  
                 }
                 if(hitWall)
                 {
-                    stuckTimer += Time.deltaTime;
+                    state = State.STUN;
                 }
-                if(stuckTimer >= stuckPeriod)
+                
+                break;
+            case State.STUN:
+                anim.AnimationName = "Etourdissement";
+                stuckTimer += Time.deltaTime;
+                if (stuckTimer >= stuckPeriod)
                 {
                     charging = false;
                     distanceAttack = false;
@@ -181,6 +159,11 @@ public class Boss : MonoBehaviour
                     state = State.MOVING;
                 }
                 break;
+
+            case State.WIN:
+                anim.AnimationName = "Jean_Claude Van DAB (victoire Boss)";
+                break;
+
             case State.DEAD:
                 gameManager.StartFadeOut();
                 break;
@@ -197,18 +180,9 @@ public class Boss : MonoBehaviour
         {
             body.velocity = new Vector2(leftWallDirection.x * chargeSpeed, 0.0f);
         }
-        if (state == State.CHARGE &&rightCharge)
+        if (state == State.CHARGE && rightCharge)
         {
             body.velocity = new Vector2(rightWallDirection.x * chargeSpeed, 0.0f);
-        }
-        if (hit)
-        {
-            hitTimer += Time.deltaTime;
-        }
-        if (hitTimer >= hitPeriod)
-        {
-            hitZone.enabled = false;
-            hit = false;
         }
     }
 
@@ -218,11 +192,6 @@ public class Boss : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
         isTurnedRight = !isTurnedRight;
-    }
-
-    void AttackDirection()
-    {      
-        hitZone.enabled = true;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -235,6 +204,7 @@ public class Boss : MonoBehaviour
         {
             health -= 1;
             healthBar.value -= 1;
+            anim.AnimationName = "Hit";
         }
     }
 }

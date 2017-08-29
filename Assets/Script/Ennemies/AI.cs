@@ -23,6 +23,7 @@ public class AI : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+      
       if(collision.gameObject.layer == LayerMask.NameToLayer("Player") && collision.isTrigger)
         {
             Destroy(GetComponent<Collider2D>());
@@ -32,7 +33,7 @@ public class AI : MonoBehaviour
         Bullet bullet = collision.gameObject.GetComponent<Bullet>();
       if(bullet != null && bullet.GetHit())
         {
-            Destroy(gameObject);
+            Destroy(gameObject,1);
         }
  
         if (collision.gameObject.layer == LayerMask.NameToLayer("Fall"))

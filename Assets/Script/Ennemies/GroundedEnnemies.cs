@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 public class GroundedEnnemies : AI
 {
@@ -22,6 +23,8 @@ public class GroundedEnnemies : AI
     float cooldown;
     const float cooldownPeriod = 2f;
     bool isTurnedRight = false;
+    [SerializeField]
+    SkeletonAnimation anim;
 	
 	void Start ()
     {
@@ -35,7 +38,8 @@ public class GroundedEnnemies : AI
 
         if (Vector3.Distance(transform.position, player.transform.position) < maxRange)          
         {
-            detect = true;                  
+            detect = true;
+            anim.AnimationName = "marche";                  
         }
         if (Vector3.Distance(transform.position,player.transform.position ) > maxRange)
         {
@@ -46,6 +50,7 @@ public class GroundedEnnemies : AI
             cooldown += Time.deltaTime;
             if (cooldown >= cooldownPeriod)
             {
+                anim.AnimationName = "attaque";
                 hitTimer = 0.0f;
                 cooldown = 0.0f;
                 hit = true;

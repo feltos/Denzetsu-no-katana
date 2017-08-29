@@ -53,9 +53,8 @@ public class PlayerCharacter : MonoBehaviour
     Slider healthBar;
 
     float walkDeadZone = 0.01f;
-
     [SerializeField]
-    Animator animator;
+    Animator playerAnim;
 
     void Start ()
     {
@@ -91,15 +90,15 @@ public class PlayerCharacter : MonoBehaviour
         }
         if(horizontal > 0 || horizontal < 0)
         {
-            animator.SetInteger("Deplacement", 1);
+            playerAnim.SetInteger("Course", 1);
         }
-        if(horizontal == 0)
+        if(horizontal == 0 && groundCheck.GetGroundedValue() >= 1)
         {
-            animator.SetInteger("Deplacement", 0);
+            playerAnim.SetInteger("Course", 0);
         }
         if(Input.GetButtonDown("Fire1"))
         {
-            animator.SetInteger("Attaque", 1);
+            playerAnim.SetInteger("Attaque", 1);
             hit = true;
             hitTimer = 0.0f;
             hitZones[0].enabled = true;                  
@@ -107,7 +106,7 @@ public class PlayerCharacter : MonoBehaviour
        if(Input.GetButtonDown("Jump") && groundCheck.GetGroundedValue() >= 1)
         {
             body.velocity = new Vector2(body.velocity.x, jump);
-            animator.SetInteger("State",2);
+            playerAnim.SetInteger("Saut", 1);
         }
         if (Input.GetButtonDown("Jump") && OnWall)
         {
@@ -115,8 +114,9 @@ public class PlayerCharacter : MonoBehaviour
             body.gravityScale = basicGravityScale;
             body.velocity = new Vector2(horizontalMovement, jump);
             OnWall = false;
-            animator.SetInteger("State",2);
+            playerAnim.SetInteger("Walljump", 0);
         }
+     
         if(health <= 0)
         {
             LoadLevel(name);
@@ -155,7 +155,7 @@ public class PlayerCharacter : MonoBehaviour
             for (int i = 0; i < hitZones.Length; i++)
             {
                 hitZones[i].enabled = false;
-                animator.SetInteger("Attaque", 0);
+                playerAnim.SetInteger("Attaque", 0);
             }
             hit = false;
         }
@@ -168,6 +168,7 @@ public class PlayerCharacter : MonoBehaviour
             body.velocity = Vector2.zero;
             speed = 0;
             OnWall = true;
+            playerAnim.SetInteger("Walljump", 1);
         }
         if(collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
