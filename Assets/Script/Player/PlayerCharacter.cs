@@ -66,7 +66,6 @@ public class PlayerCharacter : MonoBehaviour
 
     void Update()
     {
-
         if(getKnockback)
         {
             knockbackTimer += Time.deltaTime;
@@ -101,7 +100,7 @@ public class PlayerCharacter : MonoBehaviour
             playerAnim.SetInteger("Attaque", 1);
             hit = true;
             hitTimer = 0.0f;
-            hitZones[0].enabled = true;                  
+            hitZones[0].enabled = true;               
         }
        if(Input.GetButtonDown("Jump") && groundCheck.GetGroundedValue() >= 1)
         {
@@ -150,46 +149,43 @@ public class PlayerCharacter : MonoBehaviour
         {
             hitTimer += Time.deltaTime;
         }
-        if(hitTimer > hitPeriod)
-        {
-            for (int i = 0; i < hitZones.Length; i++)
-            {
-                hitZones[i].enabled = false;
-                playerAnim.SetInteger("Attaque", 0);
-            }
-            hit = false;
-        }
-    }
-    void OnCollisionEnter2D(Collision2D collider)
+    if(hitTimer > hitPeriod)
     {
-        if(collider.gameObject.layer == LayerMask.NameToLayer("Wall") && groundCheck.GetGroundedValue() <= 0)
-        {            
-            body.gravityScale = 0;
-            body.velocity = Vector2.zero;
-            speed = 0;
-            OnWall = true;
-            playerAnim.SetInteger("Walljump", 1);
-        }
-        if(collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        for (int i = 0; i < hitZones.Length; i++)
         {
-            KnockbackEffect(collider.gameObject);
+            hitZones[i].enabled = false;
+            playerAnim.SetInteger("Attaque", 0);
         }
+        hit = false;
+    }
+}
+void OnCollisionEnter2D(Collision2D collider)
+{
+    if(collider.gameObject.layer == LayerMask.NameToLayer("Wall") && groundCheck.GetGroundedValue() <= 0)
+    {            
+        body.gravityScale = 0;
+        body.velocity = Vector2.zero;
+        speed = 0;
+        OnWall = true;
+        playerAnim.SetInteger("Walljump", 1);
+    }
+    if(collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+    {
+        KnockbackEffect(collider.gameObject);
+    }
+}
+
+void OnTriggerEnter2D(Collider2D collision)
+{
+    if(collision.gameObject.layer == LayerMask.NameToLayer("DeathZone"))
+    {
+        gameManager.Restart();
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && collision.IsTouching(m_MainBox))
     {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("DeathZone"))
-        {
-            gameManager.Restart();
-        }
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Boss"))
-        {
-            KnockbackEffect(collision.gameObject);
-        }
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && collision.IsTouching(m_MainBox))
-        {
-            KnockbackEffect(collision.gameObject);   
-            Destroy(collision.gameObject);
+        KnockbackEffect(collision.gameObject);   
+        Destroy(collision.gameObject);
         }
         if (collision.gameObject.layer == LayerMask.NameToLayer("LaserBeam"))
         {

@@ -40,5 +40,9 @@ public class AI : MonoBehaviour
         {
             fall = true;
         }  
-}
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+
+    }
 }
